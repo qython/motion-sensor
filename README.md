@@ -15,6 +15,4 @@ Steps may differ depending on system you use. Google knows everything.
 
 ## Saving dependencies
 
-To save actual list of installed using pip:
-
-**pip freeze > requirements.txt**
+To save actual list of installed use: **pip freeze > requirements.txt**
