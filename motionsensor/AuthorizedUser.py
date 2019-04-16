@@ -1,6 +1,6 @@
 class AuthorizedUser(object):
 
-    def __init(self, username, file_list):
+    def __init__(self, username, file_list):
         self.__username = username
         self.__file_list = file_list
 
