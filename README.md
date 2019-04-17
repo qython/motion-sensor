@@ -2,17 +2,15 @@
 
 ## Setup
 
-1. Make sure you have *Python 3.7.X* installed.
-2. Install **virtualenv** (via pip directly or **python -m pip install virtualenv**).
-3. Execute **virtualenv .** or **python -m virtualenv .** to set up environment in root folder of repository
-4. Start environment by executing **source bin/activate** 
-5. Install necessary dependencies via **pip install -r requirements.txt**
-6. Have fun.
+1. Zainstaluj Pythona w wersji przynajmniej 3.7.
+2. Zainstaluj **virtualenv** ( **pip install virtualenv** lub **python -m pip install virtualenv**).
+3. Utwórz wiertualne środowisko (venv) za pomocą **virtualenv .** lub **python -m virtualenv .** - upewnij sie ze jestes w katalogu głównym.
 
-If you are done, use **deactivate** to exit virtualenv.
+Uruchomienie venva: **source bin/activate**
+Wyjście z venva: **deactivate**
+Instalacja zalenznosci: **pip install -r requirements.txt**
 
-Steps may differ depending on system you use. Google knows everything.
+Na kazdym systemie to powinno wyglądać tak samo (na Windowsie lepiej korzystać z Git Basha).
 
-## Saving dependencies
-
-To save actual list of installed use: **pip freeze > requirements.txt**
+## Zapisywanie zaleznosci
+**pip freeze > requirements.txt**
