@@ -10,7 +10,7 @@ class FaceRecognition(object):
 
     def compare(self, detected_image_location):
         for user in self.__users:
-            for f in user.get_file_list():
+            for f in user.get_files_list():
                 file_name = join(self.__image_dir_location, f)
                 if(isfile(file_name)):
                     result = self.__is_recognized(file_name, detected_image_location)
