@@ -14,3 +14,10 @@ Na kazdym systemie to powinno wyglądać tak samo (na Windowsie lepiej korzysta�
 
 ## Zapisywanie zaleznosci
 **pip freeze > requirements.txt**
+
+# Testy
+Framework do testów jednostkowych: **pytest**
+Wykonywanie testów: **pytest test** będąc w katalogu głównym repozytorium.
+
+Wszystkie testy są w folderze 'test'.
+Kazdy plik z testami musi posiadać prefix 'test_' - tak jak kazda fukcja która jest testem.
