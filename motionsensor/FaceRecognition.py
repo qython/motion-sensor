@@ -24,5 +24,5 @@ class FaceRecognition(object):
 
         authorized_encoding = face_recognition.face_encodings(authorized_image)[0]
         detected_encoding = face_recognition.face_encodings(detected_image)[0]
-        
+
         return face_recognition.compare_faces([authorized_encoding], detected_encoding)

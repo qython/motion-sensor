@@ -1,5 +1,5 @@
 import sys
-sys.path.append('/mnt/data/Workspace/motion-sensor')
+sys.path.append('../motion-sensor')
 
 from motionsensor.AuthorizedUser import AuthorizedUser
 
