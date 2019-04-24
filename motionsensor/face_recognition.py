@@ -14,7 +14,7 @@ class FaceRecognition(object):
                 file_name = join(self.__image_dir_location, f)
                 if(isfile(file_name)):
                     result = self.__is_recognized(file_name, detected_image_location)
-                    if(result):
+                    if result == True:
                         return user.get_username()
         return None
 
@@ -22,7 +22,12 @@ class FaceRecognition(object):
         authorized_image = face_recognition.load_image_file(authorized_image_location)
         detected_image = face_recognition.load_image_file(detected_image_location)
 
-        authorized_encoding = face_recognition.face_encodings(authorized_image)[0]
-        detected_encoding = face_recognition.face_encodings(detected_image)[0]
+        authorized_encodings = face_recognition.face_encodings(authorized_image)
+        detected_encodings = face_recognition.face_encodings(detected_image)
 
-        return face_recognition.compare_faces([authorized_encoding], detected_encoding)
+        for detected_encoding in detected_encodings:
+            results = face_recognition.compare_faces(authorized_encodings, detected_encoding)
+            for result in results:
+                if result == True:
+                    return True
+        return False

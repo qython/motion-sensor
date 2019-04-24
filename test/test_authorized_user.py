@@ -7,7 +7,7 @@ TESTNAME = "Adrian"
 FILES_LIST = [
     'qwe.png',
     'abc.png',
-    'image.png'
+    'adrian.png'
 ]
 
 def test_create_user():
