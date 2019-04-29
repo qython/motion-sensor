@@ -1,0 +1,12 @@
+{
+    "users": [
+        {
+            "name": "Adrian",
+            "images": [
+                "adrian.jpg",
+                "adrian2.jpg"
+            ]
+        }
+    ],
+    "image_folder_location": "images"
+}
