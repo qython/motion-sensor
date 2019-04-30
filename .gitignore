@@ -8,7 +8,7 @@ __pycache__/
 
 _configtest.py
 .DS_Store
-
+.vscode
 # Distribution / packaging
 .Python
 build/
