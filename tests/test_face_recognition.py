@@ -1,7 +1,4 @@
-import sys
 import os
-
-sys.path.append('../motion-sensor')
 
 from motionsensor.face_recognition import FaceRecognition
 from motionsensor.authorized_user import AuthorizedUser

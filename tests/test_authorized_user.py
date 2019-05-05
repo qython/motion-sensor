@@ -1,6 +1,3 @@
-import sys
-sys.path.append('../motion-sensor')
-
 from motionsensor.authorized_user import AuthorizedUser
 
 TESTNAME = "Adrian"
