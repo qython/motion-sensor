@@ -1,0 +1,12 @@
+{
+    "users": [
+        {
+            "name": "Bonus BGC",
+            "images": [
+                "bonus.jpg",
+                "bonus2.jpg"
+            ]
+        }
+    ],
+    "image_folder_location": "images"
+}
