@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
-import urllib2, json, numpy as np
+import json, numpy as np
+from urllib.request import urlopen
 from decimal import Decimal
 from time import sleep
 dane_obrobione = []
@@ -21,7 +22,10 @@ class MotionSensor(object):
 
     def read_from_url(self):
         for y in range(0, self.__how_many_tries):
-            data = json.load(urllib2.urlopen("http://" + self.__ipwebcam_address + ":8080/sensors.json?sense=motion"))
+            request_url="http://" + self.__ipwebcam_address + ":8080/sensors.json?sense=motion"
+            json_data=urlopen(request_url).read().decode('UTF-8')
+            print(json_data)
+            data = json.loads(json_data)
             number_of_elements = len(data[u'motion'][u'data'])
             print("Number of elements", number_of_elements)
             print("Ile pomiarow", (number_of_elements - self.__ile_ostatnich_pomiarow))
@@ -38,7 +42,7 @@ class MotionSensor(object):
 
     def counting_drift(self):
         diff = 0
-        for licznik in range(1, self.__ile_danych_obrobionych / 2):
+        for licznik in range(1, self.__ile_danych_obrobionych // 2):
             diff = diff + abs(
 				self.__dane_obrobione[self.__ile_danych_obrobionych - licznik] - self.__dane_obrobione[0 + licznik])
         diff = abs(diff) / self.__ile_danych_obrobionych
@@ -57,6 +61,6 @@ class MotionSensor(object):
         else:
             print("Motion detected: 0")
 
-ms = MotionSensor("192.168.1.50",40,3,1,1,10,1200,3000)
+ms = MotionSensor("192.168.0.221",40,3,1,1,10,1200,3000)
 ms.read_from_url()
 ms.motion_detect()
