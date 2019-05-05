@@ -5,70 +5,58 @@ from decimal import Decimal
 from time import sleep
 dane_obrobione = []
 
+class MotionSensor(object):
 
-# Configuration --------------
-ipwebcam_address = "192.168.1.50"	# ipweb cam appliation address
-ile_ostatnich_pomiarow = 40		# ile zbierac z jednego pomiaru - nie mniej niz 5 nie wiecej niz 49 / how many variables from one measurement
-how_many_tries = 3 			# ile pomiarow / how many measurements
-interval = 1				# czas pomiedzy pomiarami / time between measurement
+    def __init__(self, ipwebcam_address, ile_ostatnich_pomiarow, how_many_tries, interval, treshold_weight, drift_weight, min_final_move, max_final_move):
+        self.__ipwebcam_address = ipwebcam_address
+        self.__ile_ostatnich_pomiarow =ile_ostatnich_pomiarow
+        self.__how_many_tries=how_many_tries
+        self.__interval=interval
+        self.__treshold_weight=treshold_weight
+        self.__drift_weight=drift_weight
+        self.__min_final_move=min_final_move
+        self.__max_final_move=max_final_move
+        self.__ile_danych_obrobionych=0
+        self.__dane_obrobione=[]
 
-# EN: Weight in calculation variable of motion sensors from app
-# PL: uwglednianie pomiarow z czujnika ruchu - jezeli nie miesci sie w zbiorze to 0
-treshold_weight = 1
+    def read_from_url(self):
+        for y in range(0, self.__how_many_tries):
+            data = json.load(urllib2.urlopen("http://" + self.__ipwebcam_address + ":8080/sensors.json?sense=motion"))
+            number_of_elements = len(data[u'motion'][u'data'])
+            print("Number of elements", number_of_elements)
+            print("Ile pomiarow", (number_of_elements - self.__ile_ostatnich_pomiarow))
+            for x in range(number_of_elements - self.__ile_ostatnich_pomiarow, number_of_elements):
+                self.__dane_obrobione.append(float(str(data[u'motion'][u'data'][x][1]).replace('[', '').replace(']', '')))
+            #  print(data[u'motion'][u'data'][x][1]) #wyswietlanie danych pomiarowych
 
-# EN: Weight in calculation variable of drift (how many move in image)
-# PL: uwglednianie pomiarow z czujnika ruchu - jezeli nie miesci sie w zbiorze to 0
-drift_weight  = 10
+            sleep(self.__interval)
+        self.__ile_danych_obrobionych = int(len(self.__dane_obrobione))
 
-# EN: Final detection variable lower and upper set value
-# PL: Zmienne okreslajace dolna i gorna granice wykrywania 
-min_final_move = 1200
-max_final_move = 3000
-# ---------------------------
+    def counting_average(self):
+        srednia = np.mean(self.__dane_obrobione)
+        return srednia
 
+    def counting_drift(self):
+        diff = 0
+        for licznik in range(1, self.__ile_danych_obrobionych / 2):
+            diff = diff + abs(
+				self.__dane_obrobione[self.__ile_danych_obrobionych - licznik] - self.__dane_obrobione[0 + licznik])
+        diff = abs(diff) / self.__ile_danych_obrobionych
+        if (diff == 0): diff = 0.1
+        return diff
 
+    def summary(self):
+        summary = (self.counting_average() * self.__treshold_weight + self.counting_drift() * self.__drift_weight) / self.__treshold_weight + self.__drift_weight
+        return summary
 
+    def motion_detect(self):
+        summary=self.summary()
 
+        if ((summary > self.__min_final_move) and (summary < self.__max_final_move)):
+            print("Motion detected: 1")
+        else:
+            print("Motion detected: 0")
 
-
-# CODE --------------------------------------------
-
-for y in range(0,how_many_tries):
-	data = json.load(urllib2.urlopen("http://"+ipwebcam_address+":8080/sensors.json?sense=motion"))
-	number_of_elements=len(data[u'motion'][u'data'])
-	print "Number of elements", number_of_elements
-	print "Ile pomiarow", (number_of_elements-ile_ostatnich_pomiarow)
-
-	for x in range(number_of_elements-ile_ostatnich_pomiarow,number_of_elements):
-		dane_obrobione.append(float(str(data[u'motion'][u'data'][x][1]).replace('[','').replace(']','')))
-		# wyswietlanie danych pomiarowych
-		# print(data[u'motion'][u'data'][x][1])
-
-	sleep(interval)
-ile_danych_obrobionych = len(dane_obrobione)
-
-# Wyliczanie sredniej
-srednia = np.mean(dane_obrobione);
-
-# Wyliczanie drift (zmienosc probek)
-diff = 0
-for licznik in range(1,ile_danych_obrobionych/2):
-	diff = diff + abs(dane_obrobione[ile_danych_obrobionych-licznik] - dane_obrobione[0+licznik])	# WYLICZANIE DRIFT
-diff = abs(diff)/ile_danych_obrobionych
-if (diff == 0): diff=0.1						# jezeli zerob zeby nie wplywalo na srednio dajemy 0.1
-
-print "Dane: ",dane_obrobione
-print "Ilosc probek:", ile_danych_obrobionych
-print "Srednia", srednia
-print "Diff", diff
-
-summary = (srednia * treshold_weight + diff * drift_weight)/treshold_weight+drift_weight
-
-print summary
-
-if ((summary > min_final_move) and (summary < max_final_move)):
-	print "Motion detected: 1"
-else:
-	print "Motion detected: 0"
-
-# CODE END --------------------------------------
+ms = MotionSensor("192.168.1.50",40,3,1,1,10,1200,3000)
+ms.read_from_url()
+ms.motion_detect()
