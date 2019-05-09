@@ -1,0 +1,22 @@
+{
+    "users": [
+        {
+            "name": "Bonus BGC",
+            "images": [
+                "bonus.jpg",
+                "bonus2.jpg"
+            ]
+        }
+    ],
+    "image_folder_location": "images",
+    "motionsensor": {
+        "ip_cam_addr": "http://192.168.0.13:8080",
+        "max_measurements": 40,
+        "tries": 3,
+        "interval": 1,
+        "treshold_weight": 1,
+        "drift_weight": 10,
+        "move_min": 1000,
+        "move_max": 10000 
+    }
+}
