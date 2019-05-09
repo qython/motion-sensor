@@ -23,17 +23,14 @@ class MotionSensor(object):
     def get_response(self, url):
         return json.loads(urlopen(url).read().decode('UTF-8'))
 
-    def get_motion_sensor_data(self, url):
+    def get_motion_sensor_data(self):
         data = []
-        
-        response = self.get_response(url)
+        response = self.get_response(self.get_url_to_sensor_data())
         elements = response['motion']['data']
-
         for el in reversed(elements):
             data.append(el[1][0])
             if len(data) >= self.__max_measurements_count:
                 break
-        
         return data
 
     def count_drift(self, data):
@@ -51,15 +48,8 @@ class MotionSensor(object):
         return (summary > self.__move_min) and (summary < self.__move_max)
 
     def detect(self):
-        url = self.get_url_to_sensor_data()
         data = []
-
         for _ in range(self.__tries_count):
-            data.extend(self.get_motion_sensor_data(url))
+            data.extend(self.get_motion_sensor_data())
             sleep(self.__interval)
-
-        summary = self.count_summary(data)
-
-        print(summary)
-
-        return self.is_motion_detected(summary)
+        return self.is_motion_detected(self.count_summary(data))
