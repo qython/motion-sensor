@@ -4,63 +4,62 @@ import json, numpy as np
 from urllib.request import urlopen
 from decimal import Decimal
 from time import sleep
-dane_obrobione = []
 
 class MotionSensor(object):
 
-    def __init__(self, ipwebcam_address, ile_ostatnich_pomiarow, how_many_tries, interval, treshold_weight, drift_weight, min_final_move, max_final_move):
-        self.__ipwebcam_address = ipwebcam_address
-        self.__ile_ostatnich_pomiarow =ile_ostatnich_pomiarow
-        self.__how_many_tries=how_many_tries
-        self.__interval=interval
-        self.__treshold_weight=treshold_weight
-        self.__drift_weight=drift_weight
-        self.__min_final_move=min_final_move
-        self.__max_final_move=max_final_move
-        self.__ile_danych_obrobionych=0
-        self.__dane_obrobione=[]
+    def __init__(self, ip_cam_addr, max_measurements_count, tries_count, interval, treshold_weight, drift_weight, move_min, move_max):
+        self.__ip_cam_addr = ip_cam_addr
+        self.__max_measurements_count = max_measurements_count
+        self.__tries_count = tries_count
+        self.__interval = interval
+        self.__treshold_weight = treshold_weight
+        self.__drift_weight = drift_weight
+        self.__move_min = move_min
+        self.__move_max = move_max
 
-    def read_from_url(self):
-        for y in range(0, self.__how_many_tries):
-            request_url="http://" + self.__ipwebcam_address + ":8080/sensors.json?sense=motion"
-            json_data=urlopen(request_url).read().decode('UTF-8')
-            print(json_data)
-            data = json.loads(json_data)
-            number_of_elements = len(data[u'motion'][u'data'])
-            print("Number of elements", number_of_elements)
-            print("Ile pomiarow", (number_of_elements - self.__ile_ostatnich_pomiarow))
-            for x in range(number_of_elements - self.__ile_ostatnich_pomiarow, number_of_elements):
-                self.__dane_obrobione.append(float(str(data[u'motion'][u'data'][x][1]).replace('[', '').replace(']', '')))
-            #  print(data[u'motion'][u'data'][x][1]) #wyswietlanie danych pomiarowych
+    def get_url_to_sensor_data(self) :
+        return self.__ip_cam_addr + "/sensors.json?sense=motion"
 
-            sleep(self.__interval)
-        self.__ile_danych_obrobionych = int(len(self.__dane_obrobione))
+    def get_response(self, url):
+        return json.loads(urlopen(url).read().decode('UTF-8'))
 
-    def counting_average(self):
-        srednia = np.mean(self.__dane_obrobione)
-        return srednia
+    def get_motion_sensor_data(self, url):
+        data = []
+        
+        response = self.get_response(url)
+        elements = response['motion']['data']
 
-    def counting_drift(self):
+        for el in reversed(elements):
+            data.append(el[1][0])
+            if len(data) >= self.__max_measurements_count:
+                break
+        
+        return data
+
+    def count_drift(self, data):
         diff = 0
-        for licznik in range(1, self.__ile_danych_obrobionych // 2):
-            diff = diff + abs(
-				self.__dane_obrobione[self.__ile_danych_obrobionych - licznik] - self.__dane_obrobione[0 + licznik])
-        diff = abs(diff) / self.__ile_danych_obrobionych
-        if (diff == 0): diff = 0.1
-        return diff
+        for counter in range(1, len(data) // 2):
+            diff = diff + abs(data[len(data) - counter] - data[0 + counter])
+        diff = abs(diff) / len(data)
+        return round(diff, 2)
 
-    def summary(self):
-        summary = (self.counting_average() * self.__treshold_weight + self.counting_drift() * self.__drift_weight) / self.__treshold_weight + self.__drift_weight
-        return summary
+    def count_summary(self, data):
+        summary = (np.mean(data) * self.__treshold_weight + self.count_drift(data) * self.__drift_weight) / self.__treshold_weight + self.__drift_weight
+        return round(summary, 2)
 
-    def motion_detect(self):
-        summary=self.summary()
+    def is_motion_detected(self, summary):
+        return (summary > self.__move_min) and (summary < self.__move_max)
 
-        if ((summary > self.__min_final_move) and (summary < self.__max_final_move)):
-            print("Motion detected: 1")
-        else:
-            print("Motion detected: 0")
+    def detect(self):
+        url = self.get_url_to_sensor_data()
+        data = []
 
-ms = MotionSensor("192.168.0.221",40,3,1,1,10,1200,3000)
-ms.read_from_url()
-ms.motion_detect()
+        for _ in range(self.__tries_count):
+            data.extend(self.get_motion_sensor_data(url))
+            sleep(self.__interval)
+
+        summary = self.count_summary(data)
+
+        print(summary)
+
+        return self.is_motion_detected(summary)
