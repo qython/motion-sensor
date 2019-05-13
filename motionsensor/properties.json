@@ -10,13 +10,19 @@
     ],
     "image_folder_location": "images",
     "motionsensor": {
-        "ip_cam_addr": "http://192.168.0.13:8080",
-        "max_measurements": 40,
         "tries": 3,
         "interval": 1,
         "treshold_weight": 1,
         "drift_weight": 10,
         "move_min": 1000,
         "move_max": 10000 
+    },
+    "androidconnector": {
+        "ip_cam_addr": "http://192.168.0.13:8080",
+        "max_measurements": 40,
+        "sensor_data_endpoint": "sensors.json?sense=motion",
+        "photo_endpoint": "shot.jpg",
+        "tmp_folder_location": "tmp",
+        "last_photo_file_name": "last_photo.jpg"
     }
 }
