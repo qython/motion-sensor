@@ -2,26 +2,32 @@ import os
 
 from motionsensor.face_recognition import FaceRecognition
 from motionsensor.authorized_user import AuthorizedUser
+from motionsensor.config import load_config
 
-IMAGE_FOLDER_LOCATION = "test/resources/images"
+PROPS_FILE = os.path.join(os.path.dirname(__file__), "resources/props.json")
 
-USERS = [
-    AuthorizedUser("Bonus", ['bonus.jpg', 'bonus2.jpg']),
-    AuthorizedUser("Adrian", [ "adrian.jpg" ])
-]
+config = load_config(PROPS_FILE)
+face_recognition_config = config.get_face_recognition_config()
+
+TEST_USER_1_NAME = "Adrian"
+TEST_USER_1_IMAGE = "adrian.jpg"
+TEST_USER_2_NAME = "Bonus"
+TEST_USER_2_IMAGE = "bonus3.jpg"
+EXPECTED_IMAGE_FOLDER_LOCATION = "test/resources/images"
 
 def test_create_face_recognition_class_instance():
-    faceRecognition = FaceRecognition(USERS, IMAGE_FOLDER_LOCATION)
+    faceRecognition = FaceRecognition(face_recognition_config)
     assert faceRecognition != None
 
 def test_compare_the_same_images():
-    path_to_image = os.path.join(IMAGE_FOLDER_LOCATION, "adrian.jpg")
-    faceRecognition = FaceRecognition(USERS, IMAGE_FOLDER_LOCATION)
-    result = faceRecognition.compare(path_to_image)
-    assert result == "Adrian"
+    face_recognition = FaceRecognition(face_recognition_config)
+    
+    path_to_image = os.path.join(face_recognition_config.image_folder_location, TEST_USER_1_IMAGE)
+    result = face_recognition.compare(path_to_image)
+    assert result == TEST_USER_1_NAME
 
 def test_compare_similar_images():
-    image_name = "bonus3.jpg"
-    faceRecognition = FaceRecognition(USERS, IMAGE_FOLDER_LOCATION)
-    result = faceRecognition.compare(os.path.join(IMAGE_FOLDER_LOCATION, image_name))
-    assert result == "Bonus"
+    image_name = TEST_USER_2_IMAGE
+    face_recognition = FaceRecognition(face_recognition_config)
+    result = face_recognition.compare(os.path.join(EXPECTED_IMAGE_FOLDER_LOCATION, image_name))
+    assert result == TEST_USER_2_NAME

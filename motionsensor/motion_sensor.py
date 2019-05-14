@@ -4,13 +4,13 @@ import numpy as np
 
 class MotionSensor(object):
 
-    def __init__(self, android_connector, tries_count, interval, treshold_weight, drift_weight, move_min, move_max):
-        self.__tries_count = tries_count
-        self.__interval = interval
-        self.__treshold_weight = treshold_weight
-        self.__drift_weight = drift_weight
-        self.__move_min = move_min
-        self.__move_max = move_max
+    def __init__(self, config, android_connector):
+        self.__tries_count = config.tries
+        self.__interval = config.interval
+        self.__treshold_weight = config.treshold_weight
+        self.__drift_weight = config.drift_weight
+        self.__move_min = config.move_min
+        self.__move_max = config.move_max
         self.__android_connector = android_connector
 
     def count_drift(self, data):

@@ -9,15 +9,15 @@
                 ]
             }
         ],
-        "image_folder_location": "resources/images"
+        "image_folder_location": "test/resources/images"
     },
     "motionsensor": {
         "tries": 3,
         "interval": 1,
         "treshold_weight": 1,
         "drift_weight": 10,
-        "move_min": 2000,
-        "move_max": 10000 
+        "move_min": 1000,
+        "move_max": 3000 
     },
     "androidconnector": {
         "ip_cam_addr": "http://192.168.0.13:8080",

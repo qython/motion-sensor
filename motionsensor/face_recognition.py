@@ -4,9 +4,9 @@ from os.path import isfile, join
 
 class FaceRecognition(object):
 
-    def __init__(self, users, image_dir_location):
-        self.__users = users
-        self.__image_dir_location = image_dir_location
+    def __init__(self, config):
+        self.__users = config.users
+        self.__image_dir_location = config.image_dir_location
 
     def compare(self, detected_image_location):
         for user in self.__users:
