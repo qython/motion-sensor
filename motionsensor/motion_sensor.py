@@ -38,9 +38,4 @@ class MotionSensor(object):
 
         print(summary)
 
-        is_motion_detected = self.is_motion_detected(summary)
-
-        if is_motion_detected == True:
-            self.__android_connector.download_photo_to_tmp_folder()
-
-        return is_motion_detected
+        return self.is_motion_detected(summary)

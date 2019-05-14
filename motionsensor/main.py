@@ -1,15 +1,13 @@
 from motionsensor.motion_sensor import MotionSensor
 from motionsensor.config import load_config
-from android_connector import AndroidConnector
+from motionsensor.android_connector import AndroidConnector
 
 config = load_config("properties.json")
 
 if config is None:
     exit
 
-users = config.get_users()
-img_dir = config.get_image_folder_location()
-
+face_recognition_config = config.get_face_recognition_config()
 motion_config = config.get_motion_config()
 connector_config = config.get_android_connector_config()
 
@@ -20,5 +18,6 @@ if motion_config is not None and connector_config is not None:
     while(True):
         if ms.detect() == True:
             print("Motion detected: 1")
+            connector.download_photo_to_tmp_folder()
         else:
             print("Motion detected: 0")

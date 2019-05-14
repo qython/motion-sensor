@@ -1,14 +1,16 @@
 {
-    "users": [
-        {
-            "name": "Bonus BGC",
-            "images": [
-                "bonus.jpg",
-                "bonus2.jpg"
-            ]
-        }
-    ],
-    "image_folder_location": "images",
+    "facerecognition": {
+        "users": [
+            {
+                "name": "Bonus BGC",
+                "images": [
+                    "bonus.jpg",
+                    "bonus2.jpg"
+                ]
+            }
+        ],
+        "image_folder_location": "images"    
+    },
     "motionsensor": {
         "tries": 3,
         "interval": 1,

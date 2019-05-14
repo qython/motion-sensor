@@ -2,7 +2,8 @@ import json
 from os.path import isfile
 from motionsensor.authorized_user import AuthorizedUser
 
-USERS_SECTION = "users"
+FACE_RECOGNITION_SECTION = "facerecognition"
+USERS = "users"
 USER_NAME = "name"
 USER_IMAGES = "images"
 
@@ -39,18 +40,6 @@ class Config():
     
     def __init__(self, as_json):
         self.as_json = as_json            
-
-    def get_users(self):
-        if USERS_SECTION in self.as_json:
-            users = []
-            for user in self.as_json[USERS_SECTION]:
-                name = user[USER_NAME]
-                images = []
-                for img in user[USER_IMAGES]:
-                    images.append(img)
-                users.append(AuthorizedUser(name, images))
-            return users
-        return None
     
     def get_motion_config(self):
         if MOTION_SENSOR_SECTION in self.as_json:
@@ -61,10 +50,10 @@ class Config():
         if ANDROID_CONNECTOR_SECTION in self.as_json:
             return AndroidConnectorConfig(self.as_json[ANDROID_CONNECTOR_SECTION])
         return None
-
-    def get_image_folder_location(self):
-        if IMAGE_FOLDER in self.as_json:
-            return self.as_json[IMAGE_FOLDER]
+        
+    def get_face_recognition_config(self):
+        if FACE_RECOGNITION_SECTION in self.as_json:
+            return FaceRecognitionConfig(self.as_json[FACE_RECOGNITION_SECTION])
         return None
 
 class MotionConfig():
@@ -84,3 +73,11 @@ class AndroidConnectorConfig():
         self.photo_endpoint = json[PHOTO_ENDPOINT]
         self.tmp_folder_location = json[TMP_FOLDER]
         self.last_photo_file_name = json[TMP_FILE_NAME]
+
+class FaceRecognitionConfig():
+    def __init__(self, json):
+        self.image_folder_location = json[IMAGE_FOLDER]
+        self.users = []
+        for u in json[USERS]:
+            images = [ img for img in u[USER_IMAGES] ]
+            self.users.append(AuthorizedUser(u[USER_NAME], images))
