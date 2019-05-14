@@ -15,14 +15,21 @@ class AndroidConnector():
     def path_to_tmp_file(self):
         return os.path.join(self.tmp_dir, self.tmp_file)
 
+    def get_url_to_sensor_data(self):
+        return os.path.join(self.url, self.sensor_data_endpoint)
+
+    def get_url_to_photo(self):
+        return os.path.join(self.url, self.photo_endpoint)
+
     def __fetch_sensor_data_from_server(self):
-        return json.loads(urlopen(os.path.join(self.url, self.sensor_data_endpoint)).read().decode('UTF-8'))
+        url = self.get_url_to_sensor_data()
+        return json.loads(urlopen(url).read().decode('UTF-8'))
 
     def download_photo_to_tmp_folder(self):
         if not os.path.exists(self.tmp_dir):
             os.makedirs(self.tmp_dir)
-
-        urlretrieve(os.path.join(self.url, self.photo_endpoint), self.path_to_tmp_file)
+        url = self.get_url_to_photo()
+        urlretrieve(url, self.path_to_tmp_file)
 
     def get_motion_sensor_data(self):
         data = []

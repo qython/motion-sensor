@@ -1,8 +1,9 @@
 import os
 from motionsensor.motion_sensor import MotionSensor
+from motionsensor.android_connector import AndroidConnector
+from motionsensor.config import load_config
 
-EXPECTED_URL_ENDPOINT = "/sensors.json?sense=motion"
-IP_CAM_ADDRESS = "http://192.168.0.13:8080"
+PROPS_FILE = os.path.join(os.path.dirname(__file__), "resources/props.json")
 
 MOVE_MIN = 1000
 MOVE_MAX = 3000
@@ -15,10 +16,10 @@ SUMMARY_BELOW_MINIMUM = 300
 SUMMARY_ABOVE_MAXIMUM = 3400
 SUMMARY_IN_RANGE = 1400
 
-motion_sensor = MotionSensor(ip_cam_addr=IP_CAM_ADDRESS, max_measurements_count=40, tries_count=3, interval=1, treshold_weight=1, drift_weight=10, move_min=MOVE_MIN, move_max=MOVE_MAX)
+config = load_config(PROPS_FILE)
 
-def test_get_url():
-    assert motion_sensor.get_url_to_sensor_data() == (IP_CAM_ADDRESS + EXPECTED_URL_ENDPOINT)
+android_connector = AndroidConnector(config.get_android_connector_config())
+motion_sensor = MotionSensor(android_connector, tries_count=3, interval=1, treshold_weight=1, drift_weight=10, move_min=MOVE_MIN, move_max=MOVE_MAX)
 
 def test_count_drift():
     res = motion_sensor.count_drift(DATA_FROM_SERVER)
