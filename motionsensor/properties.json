@@ -20,7 +20,7 @@
         "move_max": 10000 
     },
     "androidconnector": {
-        "ip_cam_addr": "http://192.168.0.13:8080",
+        "ip_cam_addr": "http://192.168.43.102:8080",
         "max_measurements": 40,
         "sensor_data_endpoint": "sensors.json?sense=motion",
         "photo_endpoint": "shot.jpg",

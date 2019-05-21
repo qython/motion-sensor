@@ -1,4 +1,4 @@
-import face_recognition
+import face_recognition as fe 
 from os import listdir
 from os.path import isfile, join
 
@@ -19,14 +19,14 @@ class FaceRecognition(object):
         return None
 
     def __is_recognized(self, authorized_image_location, detected_image_location):
-        authorized_image = face_recognition.load_image_file(authorized_image_location)
-        detected_image = face_recognition.load_image_file(detected_image_location)
+        authorized_image = fe.load_image_file(authorized_image_location)
+        detected_image = fe.load_image_file(detected_image_location)
 
-        authorized_encodings = face_recognition.face_encodings(authorized_image)
-        detected_encodings = face_recognition.face_encodings(detected_image)
+        authorized_encodings = fe.face_encodings(authorized_image)
+        detected_encodings = fe.face_encodings(detected_image)
 
         for detected_encoding in detected_encodings:
-            results = face_recognition.compare_faces(authorized_encodings, detected_encoding)
+            results = fe.compare_faces(authorized_encodings, detected_encoding)
             for result in results:
                 if result == True:
                     return True
