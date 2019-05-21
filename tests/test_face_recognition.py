@@ -13,7 +13,7 @@ TEST_USER_1_NAME = "Adrian"
 TEST_USER_1_IMAGE = "adrian.jpg"
 TEST_USER_2_NAME = "Bonus"
 TEST_USER_2_IMAGE = "bonus3.jpg"
-EXPECTED_IMAGE_FOLDER_LOCATION = "test/resources/images"
+EXPECTED_IMAGE_FOLDER_LOCATION = "tests/resources/images"
 
 def test_create_face_recognition_class_instance():
     faceRecognition = FaceRecognition(face_recognition_config)
@@ -21,13 +21,10 @@ def test_create_face_recognition_class_instance():
 
 def test_compare_the_same_images():
     face_recognition = FaceRecognition(face_recognition_config)
-    
-    path_to_image = os.path.join(face_recognition_config.image_folder_location, TEST_USER_1_IMAGE)
-    result = face_recognition.compare(path_to_image)
+    result = face_recognition.compare(os.path.join(face_recognition_config.image_folder_location, TEST_USER_1_IMAGE))
     assert result == TEST_USER_1_NAME
 
 def test_compare_similar_images():
-    image_name = TEST_USER_2_IMAGE
     face_recognition = FaceRecognition(face_recognition_config)
-    result = face_recognition.compare(os.path.join(EXPECTED_IMAGE_FOLDER_LOCATION, image_name))
+    result = face_recognition.compare(os.path.join(face_recognition_config.image_folder_location, TEST_USER_2_IMAGE))
     assert result == TEST_USER_2_NAME

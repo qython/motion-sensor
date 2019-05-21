@@ -6,7 +6,7 @@ class FaceRecognition(object):
 
     def __init__(self, config):
         self.__users = config.users
-        self.__image_dir_location = config.image_dir_location
+        self.__image_dir_location = config.image_folder_location
 
     def compare(self, detected_image_location):
         for user in self.__users:

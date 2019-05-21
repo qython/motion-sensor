@@ -4,12 +4,19 @@
             {
                 "name": "Adrian",
                 "images": [
-                    "adrian.jpg",
-                    "adrian2.jpg"
+                    "adrian.jpg"
+                ]
+            },
+            {
+                "name": "Bonus",
+                "images": [
+                    "bonus.jpg",
+                    "bonus2.jpg",
+                    "bonus3.jpg"
                 ]
             }
         ],
-        "image_folder_location": "test/resources/images"
+        "image_folder_location": "tests/resources/images"
     },
     "motionsensor": {
         "tries": 3,

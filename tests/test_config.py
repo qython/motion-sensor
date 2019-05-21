@@ -3,12 +3,13 @@ import os
 
 PROPS_FILE = os.path.join(os.path.dirname(__file__), "resources/props.json")
 
-EXPECTED_USERNAME = "Adrian"
+EXPECTED_USERNAME = "Bonus"
 EXPECTED_IMAGE_LIST = [
-    "adrian.jpg", 
-    "adrian2.jpg"
+    "bonus.jpg",
+    "bonus2.jpg",
+    "bonus3.jpg"
 ]
-EXPECTED_IMAGE_FOLDER_LOCATION = "test/resources/images"
+EXPECTED_IMAGE_FOLDER_LOCATION = "tests/resources/images"
 
 EXPECTED_TRIES = 3
 EXPECTED_INTERVAL = 1
