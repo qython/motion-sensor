@@ -1,7 +1,8 @@
 import motionsensor.config as config
 import os
+import urltools
 
-PROPS_FILE = os.path.join(os.path.dirname(__file__), "resources/props.json")
+PROPS_FILE = os.path.join(os.path.dirname(__file__), os.path.normpath("resources/props.json"))
 
 EXPECTED_USERNAME = "Bonus"
 EXPECTED_IMAGE_LIST = [
@@ -9,7 +10,7 @@ EXPECTED_IMAGE_LIST = [
     "bonus2.jpg",
     "bonus3.jpg"
 ]
-EXPECTED_IMAGE_FOLDER_LOCATION = "tests/resources/images"
+EXPECTED_IMAGE_FOLDER_LOCATION = os.path.normpath("tests/resources/images")
 
 EXPECTED_TRIES = 3
 EXPECTED_INTERVAL = 1
@@ -18,7 +19,7 @@ EXPECTED_DRIFT_WEIGHT = 10
 EXPECTED_MOVE_MIN = 1000
 EXPECTED_MOVE_MAX = 3000
 
-EXPECTED_IP_CAM_ADDR = "http://192.168.0.13:8080"
+EXPECTED_IP_CAM_ADDR = urltools.normalize("http://192.168.0.13:8080")
 EXPECTED_MAX_MEASUREMENTS = 40
 EXPECTED_LAST_PHOTO_FILE_NAME = "last_photo.jpg"
 EXPECTED_PHOTO_ENDPOINT = "shot.jpg"

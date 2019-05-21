@@ -4,7 +4,7 @@ from motionsensor.face_recognition import FaceRecognition
 from motionsensor.authorized_user import AuthorizedUser
 from motionsensor.config import load_config
 
-PROPS_FILE = os.path.join(os.path.dirname(__file__), "resources/props.json")
+PROPS_FILE = os.path.join(os.path.dirname(__file__), os.path.normpath("resources/props.json"))
 
 config = load_config(PROPS_FILE)
 face_recognition_config = config.get_face_recognition_config()
@@ -13,7 +13,7 @@ TEST_USER_1_NAME = "Adrian"
 TEST_USER_1_IMAGE = "adrian.jpg"
 TEST_USER_2_NAME = "Bonus"
 TEST_USER_2_IMAGE = "bonus3.jpg"
-EXPECTED_IMAGE_FOLDER_LOCATION = "tests/resources/images"
+EXPECTED_IMAGE_FOLDER_LOCATION = os.path.normpath("tests/resources/images")
 
 def test_create_face_recognition_class_instance():
     faceRecognition = FaceRecognition(face_recognition_config)

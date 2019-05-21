@@ -3,7 +3,7 @@ from motionsensor.motion_sensor import MotionSensor
 from motionsensor.android_connector import AndroidConnector
 from motionsensor.config import load_config
 
-PROPS_FILE = os.path.join(os.path.dirname(__file__), "resources/props.json")
+PROPS_FILE = os.path.join(os.path.dirname(__file__), os.path.normpath("resources/props.json"))
 
 DATA_FROM_SERVER = [4.0, 3.2, 6.4, 3.5, 7.3, 2.5, 4.2]
 EXPECTED_DRIFT = 0.7
