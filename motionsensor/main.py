@@ -1,7 +1,7 @@
 from motionsensor.motion_sensor import MotionSensor
 from motionsensor.config import load_config
 from motionsensor.android_connector import AndroidConnector
-from motionsensor.face_recognition import FaceRecognition
+from motionsensor.face_rec import FaceRecognition
 
 import sys
 import os
