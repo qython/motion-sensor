@@ -1,6 +1,7 @@
 import json
-from os.path import isfile
+import os
 from motionsensor.authorized_user import AuthorizedUser
+import urltools
 
 import logging
 logger = logging.getLogger(__name__)
@@ -71,16 +72,16 @@ class MotionConfig():
 
 class AndroidConnectorConfig():
     def __init__(self, json):
-        self.ip_cam_addr = json[IP_CAM_ADDRESS]
+        self.ip_cam_addr = urltools.normalize(json[IP_CAM_ADDRESS])
         self.max_measurements = json[MAX_MEASUREMENTS]
         self.sensor_data_endpoint = json[SENSOR_DATA_ENDPOINT]
         self.photo_endpoint = json[PHOTO_ENDPOINT]
-        self.tmp_folder_location = json[TMP_FOLDER]
+        self.tmp_folder_location = os.path.normpath(json[TMP_FOLDER])
         self.last_photo_file_name = json[TMP_FILE_NAME]
 
 class FaceRecognitionConfig():
     def __init__(self, json):
-        self.image_folder_location = json[IMAGE_FOLDER]
+        self.image_folder_location = os.path.normpath(json[IMAGE_FOLDER])
         self.users = []
         for u in json[USERS]:
             images = [ img for img in u[USER_IMAGES] ]
