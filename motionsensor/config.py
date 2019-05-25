@@ -3,9 +3,6 @@ import os
 from motionsensor.authorized_user import AuthorizedUser
 import urltools
 
-import logging
-logger = logging.getLogger(__name__)
-
 FACE_RECOGNITION_SECTION = "facerecognition"
 USERS = "users"
 USER_NAME = "name"
@@ -29,16 +26,17 @@ SENSOR_DATA_ENDPOINT = "sensor_data_endpoint"
 PHOTO_ENDPOINT = "photo_endpoint"
 TMP_FOLDER = "tmp_folder_location"
 TMP_FILE_NAME = "last_photo_file_name"
+PHOTO_DELAY = "photo_delay"
 
 def load_config(file):
-    logger.debug("Loading configuration file...")
+    print("Loading configuration file...")
     try:
         f = open(file, 'r')
         loaded = json.loads(f.read())
         f.close()
         return Config(loaded)
     except IOError:
-        logger.error("Cannot load properties file")
+        print("Cannot load properties file")
     return None
 
 class Config():
@@ -78,6 +76,7 @@ class AndroidConnectorConfig():
         self.photo_endpoint = json[PHOTO_ENDPOINT]
         self.tmp_folder_location = os.path.normpath(json[TMP_FOLDER])
         self.last_photo_file_name = json[TMP_FILE_NAME]
+        self.photo_delay = json[PHOTO_DELAY]
 
 class FaceRecognitionConfig():
     def __init__(self, json):

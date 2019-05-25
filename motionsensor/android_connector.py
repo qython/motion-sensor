@@ -1,9 +1,7 @@
 import json
 from urllib.request import urlopen, urlretrieve
 import os
-
-import logging
-logger = logging.getLogger(__name__)
+import time
 
 class AndroidConnector():
     def __init__(self, config):
@@ -13,6 +11,7 @@ class AndroidConnector():
         self.tmp_file = config.last_photo_file_name
         self.sensor_data_endpoint = config.sensor_data_endpoint
         self.photo_endpoint = config.photo_endpoint
+        self.photo_delay = config.photo_delay
     
     @property
     def path_to_tmp_file(self):
@@ -25,12 +24,15 @@ class AndroidConnector():
         return os.path.join(self.url, self.photo_endpoint)
 
     def __fetch_sensor_data_from_server(self):
-        logger.debug("Fetching sensor data from server")
+        print("Fetching sensor data from server")
         url = self.get_url_to_sensor_data()
         return json.loads(urlopen(url).read().decode('UTF-8'))
 
     def download_photo_to_tmp_folder(self):
-        logger.debug("Downloading photo to tmp folder")
+        print("Downloading photo to tmp folder")
+        if self.photo_delay > 0:
+            print("Photo will be made in %d seconds" % self.photo_delay )
+            time.sleep(self.photo_delay )
         if not os.path.exists(self.tmp_dir):
             os.makedirs(self.tmp_dir)
         url = self.get_url_to_photo()
