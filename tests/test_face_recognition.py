@@ -14,6 +14,8 @@ TEST_USER_1_IMAGE = "adrian.jpg"
 TEST_USER_2_NAME = "Bonus"
 TEST_USER_2_IMAGE = "bonus3.jpg"
 EXPECTED_IMAGE_FOLDER_LOCATION = "test/resources/images"
+TEST_USER_3_NAME = "Marcin"
+TEST_USER_3_IMAGE = "marcin-first.jpg"
 
 def test_create_face_recognition_class_instance():
     faceRecognition = FaceRecognition(face_recognition_config)
@@ -31,3 +33,9 @@ def test_compare_similar_images():
     face_recognition = FaceRecognition(face_recognition_config)
     result = face_recognition.compare(os.path.join(EXPECTED_IMAGE_FOLDER_LOCATION, image_name))
     assert result == TEST_USER_2_NAME
+
+def test_compare_similar_images_2():
+    image_name = TEST_USER_3_IMAGE
+    face_recognition = FaceRecognition(face_recognition_config)
+    result = face_recognition.compare(os.path.join(EXPECTED_IMAGE_FOLDER_LOCATION, image_name))
+    assert result == TEST_USER_3_NAME

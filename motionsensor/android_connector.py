@@ -2,6 +2,9 @@ import json
 from urllib.request import urlopen, urlretrieve
 import os
 
+import logging
+logger = logging.getLogger(__name__)
+
 class AndroidConnector():
     def __init__(self, config):
         self.url = config.ip_cam_addr
@@ -22,10 +25,12 @@ class AndroidConnector():
         return os.path.join(self.url, self.photo_endpoint)
 
     def __fetch_sensor_data_from_server(self):
+        logger.debug("Fetching sensor data from server")
         url = self.get_url_to_sensor_data()
         return json.loads(urlopen(url).read().decode('UTF-8'))
 
     def download_photo_to_tmp_folder(self):
+        logger.debug("Downloading photo to tmp folder")
         if not os.path.exists(self.tmp_dir):
             os.makedirs(self.tmp_dir)
         url = self.get_url_to_photo()

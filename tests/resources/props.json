@@ -7,6 +7,12 @@
                     "adrian.jpg",
                     "adrian2.jpg"
                 ]
+            },
+            {
+                "name": "Marcin",
+                "images": [
+                    "marcin-main.jpg"
+                ]
             }
         ],
         "image_folder_location": "test/resources/images"

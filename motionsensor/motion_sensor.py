@@ -2,6 +2,9 @@ from decimal import Decimal
 from time import sleep
 import numpy as np
 
+import logging
+logger = logging.getLogger(__name__)
+
 class MotionSensor(object):
 
     def __init__(self, config, android_connector):
@@ -14,6 +17,7 @@ class MotionSensor(object):
         self.__android_connector = android_connector
 
     def count_drift(self, data):
+        logger.debug("Counting drift...")
         diff = 0
         for counter in range(1, len(data) // 2):
             diff = diff + abs(data[len(data) - counter] - data[0 + counter])
@@ -21,6 +25,7 @@ class MotionSensor(object):
         return round(diff, 2)
 
     def count_summary(self, data):
+        logger.debug("Counting summary...")
         summary = (np.mean(data) * self.__treshold_weight + self.count_drift(data) * self.__drift_weight) / self.__treshold_weight + self.__drift_weight
         return round(summary, 2)
 
@@ -35,7 +40,5 @@ class MotionSensor(object):
             sleep(self.__interval)
 
         summary = self.count_summary(data)
-
-        print(summary)
 
         return self.is_motion_detected(summary)

@@ -2,6 +2,9 @@ import json
 from os.path import isfile
 from motionsensor.authorized_user import AuthorizedUser
 
+import logging
+logger = logging.getLogger(__name__)
+
 FACE_RECOGNITION_SECTION = "facerecognition"
 USERS = "users"
 USER_NAME = "name"
@@ -27,13 +30,14 @@ TMP_FOLDER = "tmp_folder_location"
 TMP_FILE_NAME = "last_photo_file_name"
 
 def load_config(file):
+    logger.debug("Loading configuration file...")
     try:
         f = open(file, 'r')
         loaded = json.loads(f.read())
         f.close()
         return Config(loaded)
     except IOError:
-        print("ERROR: Cannot load properties file")
+        logger.error("Cannot load properties file")
     return None
 
 class Config():
