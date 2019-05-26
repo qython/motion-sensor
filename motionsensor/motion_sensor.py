@@ -1,40 +1,17 @@
-#!/usr/bin/python
-
-import json, numpy as np
-from urllib.request import urlopen
 from decimal import Decimal
 from time import sleep
+import numpy as np
 
 class MotionSensor(object):
 
-    def __init__(self, ip_cam_addr, max_measurements_count, tries_count, interval, treshold_weight, drift_weight, move_min, move_max):
-        self.__ip_cam_addr = ip_cam_addr
-        self.__max_measurements_count = max_measurements_count
-        self.__tries_count = tries_count
-        self.__interval = interval
-        self.__treshold_weight = treshold_weight
-        self.__drift_weight = drift_weight
-        self.__move_min = move_min
-        self.__move_max = move_max
-
-    def get_url_to_sensor_data(self) :
-        return self.__ip_cam_addr + "/sensors.json?sense=motion"
-
-    def get_response(self, url):
-        return json.loads(urlopen(url).read().decode('UTF-8'))
-
-    def get_motion_sensor_data(self, url):
-        data = []
-        
-        response = self.get_response(url)
-        elements = response['motion']['data']
-
-        for el in reversed(elements):
-            data.append(el[1][0])
-            if len(data) >= self.__max_measurements_count:
-                break
-        
-        return data
+    def __init__(self, config, android_connector):
+        self.__tries_count = config.tries
+        self.__interval = config.interval
+        self.__treshold_weight = config.treshold_weight
+        self.__drift_weight = config.drift_weight
+        self.__move_min = config.move_min
+        self.__move_max = config.move_max
+        self.__android_connector = android_connector
 
     def count_drift(self, data):
         diff = 0
@@ -51,11 +28,10 @@ class MotionSensor(object):
         return (summary > self.__move_min) and (summary < self.__move_max)
 
     def detect(self):
-        url = self.get_url_to_sensor_data()
         data = []
 
         for _ in range(self.__tries_count):
-            data.extend(self.get_motion_sensor_data(url))
+            data.extend(self.__android_connector.get_motion_sensor_data())
             sleep(self.__interval)
 
         summary = self.count_summary(data)

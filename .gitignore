@@ -6,6 +6,8 @@ __pycache__/
 # C extensions
 *.so
 
+tmp/
+
 _configtest.py
 .DS_Store
 .vscode
