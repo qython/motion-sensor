@@ -7,6 +7,13 @@
                     "bonus.jpg",
                     "bonus2.jpg"
                 ]
+            },
+            {
+                "name": "Marcin",
+                "images": [
+                    "marcin-main.jpg",
+                    "marcin-first.jpg"
+                ]
             }
         ],
         "image_folder_location": "images"    
@@ -20,11 +27,12 @@
         "move_max": 10000 
     },
     "androidconnector": {
-        "ip_cam_addr": "http://192.168.43.102:8080",
+        "ip_cam_addr": "http://192.168.0.13:8080",
         "max_measurements": 40,
         "sensor_data_endpoint": "sensors.json?sense=motion",
         "photo_endpoint": "shot.jpg",
         "tmp_folder_location": "tmp",
-        "last_photo_file_name": "last_photo.jpg"
+        "last_photo_file_name": "last_photo.jpg",
+        "photo_delay": 3
     }
 }

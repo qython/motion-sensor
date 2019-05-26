@@ -28,6 +28,7 @@ class MotionSensor(object):
         return (summary > self.__move_min) and (summary < self.__move_max)
 
     def detect(self):
+        print("Detecting started!")
         data = []
 
         for _ in range(self.__tries_count):
@@ -35,7 +36,5 @@ class MotionSensor(object):
             sleep(self.__interval)
 
         summary = self.count_summary(data)
-
-        print(summary)
 
         return self.is_motion_detected(summary)
