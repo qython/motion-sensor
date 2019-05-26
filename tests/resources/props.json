@@ -38,6 +38,7 @@
         "sensor_data_endpoint": "sensors.json?sense=motion",
         "photo_endpoint": "shot.jpg",
         "tmp_folder_location": "tmp",
-        "last_photo_file_name": "last_photo.jpg"
+        "last_photo_file_name": "last_photo.jpg",
+        "photo_delay": 5
     }
 }
