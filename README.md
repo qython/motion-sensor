@@ -1,53 +1,73 @@
-# motion-sensor
+ # motion-sensor
+
+"Doorbell written in python. Application works with IPWebCam (Android application that runs server allowing for eg. fetch photo (.png) and informations about changes in the picture).
 
 #### Setup
 
-1. Zainstaluj **pythona3**, **python3-pip**, i  **cmake** (przy użyciu dowolnego menagera paczek dla dystrybucji Linux, brew dla MacOS, lub standardowej instalacji dla Windowsa)
+###### Commands below assumes that they are executed in root directory of repository
 
-    Windows: [Python](https://www.python.org/downloads/) [Cmake](https://cmake.org/download/)
+1. Install **python3**, **python3-pip**, and **cmake** (package manager depends on system/distribution you use).
     
-2. Zainstaluj **virtualenv**.
+2. Install **virtualenv**.
     ```bash
-    pip3 install virtualenv
+    python3 -m pip install virtualenv
     ```
     
-3. Będąc w katalogu głownym projektu utwórz środowisko wirtualne (np. 'env')
+3. Create virtual environment wherever you want (np. 'env')
     ```bash
-    virtualenv env
+    python3 -m virtualenv env
+    ```
+    
+4. Start virtualenv
+    Linux/MacOS
+    ```bash
+    source env/bin/activate
+    ```
+    
+    Windows
+    ```bash
+    source env/Scripts/activate.bat
+    ```
+5. Install dependencies
+    ```bash
+    pip install -r requirements.txt
+    ```
+6. Install IPWebcam on Android device
+
+7. Start IPWebcam
+
+8. Update configuration file (motionsensor/properties.json)
+    * a change of 'ip_cam_addr' in mandatory.
+    * add your own photos to folder defined by 'image_folder_location' and provide them to 'users'
+
+9. Run montion-sensor
+    ```bash
+    python motionsensor/main.py
     ```
 
-#### Przydatne komendy
-- uruchomienie venva
-    ```bash
-    source /env/bin/activate
-    ```
-- wyjście ze srodowiska
+#### Useful commands
+- exit venv
     ```bash
     deactivate
     ```
-- instalacja zalenżności
+- save dependencies to requirements.txt (in root directory of repository)
     ```bash
-    pip3 install -r requirements.txt
-    ```
-- zapisywanie zainstalowanych zalezżości
-    ```bash
-    pip3 freeze > requirements.txt
+    pip freeze > requirements.txt
     ```
 
-# Testy
-Framework do testów jednostkowych: **pytest**
+# Test execution
+Unit test framework: **pytest**
 
-1. Zainstaluj motion-sensor jako paczkę.
+1. Install **motionsensor** as local package
     ```bash 
     pip install -e .
     ```
 
-2. Uruchom testy.
+2. Start tests.
     ```bash 
     pytest tests
     ```
 
-- Testy wykonuj zawsze będąc w głównym folderze repozytorium.
-- Wszystkie testy są w folderze 'tests'.
-- Kazdy plik z testami musi posiadać prefix 'test_' - tak samo jak każda fukcja która jest testem.
-
+- Tests need to be executed in root folder of repository.
+- All tests has to be be stored in 'tests'.
+- Every test file and test function has to contain prefix 'test_'.
